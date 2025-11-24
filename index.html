@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curso de Python: de cero a análisis de datos</title>
+  <link rel="icon" type="image/png" href="faviconpython.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0c1b33;
+      --navy-soft: #132542;
+      --gold: #d4af37;
+      --white: #f8f9fb;
+      --text: #dfe6f3;
+      --muted: #9fb2cc;
+      --card: rgba(255, 255, 255, 0.04);
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Work Sans", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.12), transparent 35%),
+                  radial-gradient(circle at 80% 0%, rgba(49, 92, 155, 0.3), transparent 30%),
+                  var(--navy);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: min(1100px, 90vw);
+      margin: 0 auto;
+      padding: 0 0 80px 0;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+      background: rgba(12, 27, 51, 0.8);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 5vw;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .brand-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1f3d66, #0c1b33);
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-weight: 700;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    .hero {
+      padding: 90px 0 40px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-family: "Merriweather", Georgia, serif;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      margin: 0 0 12px;
+      color: var(--white);
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin: 0 0 18px;
+    }
+
+    .hero-text {
+      color: var(--text);
+      margin-bottom: 26px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, border 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #1f3d66, #0c1b33);
+      color: var(--white);
+      border-color: var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 30px rgba(12, 27, 51, 0.45);
+    }
+
+    .btn-secondary {
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold);
+      border-color: rgba(212, 175, 55, 0.4);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      background: rgba(212, 175, 55, 0.16);
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .section {
+      margin-top: 28px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 1.5rem;
+      color: var(--white);
+      font-family: "Merriweather", Georgia, serif;
+    }
+
+    .section-subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 8px;
+    }
+
+    .card-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: rgba(212, 175, 55, 0.12);
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-weight: 700;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+    }
+
+    .card h3 {
+      margin: 0;
+      color: var(--white);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      background: rgba(19, 37, 66, 0.9);
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: var(--text);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .list li::before {
+      content: "•";
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .graphic-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 10px;
+    }
+
+    .graphic-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .graphic-card figcaption {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+    }
+
+    .detail {
+      background: rgba(19, 37, 66, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: var(--text);
+      display: grid;
+      gap: 4px;
+    }
+
+    .detail strong {
+      color: var(--gold);
+    }
+
+    .weeks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .week {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: grid;
+      gap: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .week h4 {
+      margin: 0;
+      color: var(--white);
+    }
+
+    .audience {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text);
+    }
+
+    .audience li {
+      margin-bottom: 8px;
+    }
+
+    .cta-box {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(12, 27, 51, 0.9));
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-radius: 16px;
+      padding: 20px;
+      display: grid;
+      gap: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      color: var(--text);
+    }
+
+    .contact span {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      background: rgba(12, 27, 51, 0.85);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 10px;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 32px 0 48px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 680px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        padding-top: 70px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a class="brand" href="#hero">
+        <span class="brand-badge">Py</span>
+        <span>Curso Python · UNAM</span>
+      </a>
+      <div class="nav-links">
+        <a href="#logros">Logros</a>
+        <a href="#ejemplos">Ejemplos</a>
+        <a href="#temario">Temario</a>
+        <a href="#registro">Registro</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero" id="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Python para análisis de datos</div>
+          <h1>Curso de Python: de cero a análisis de datos</h1>
+          <p class="subtitle">Aprende a programar, automatizar tareas y hacer gráficas en solo 3 semanas</p>
+          <p class="hero-text">Ideal para estudiantes, principiantes y curiosos de la ciencia de datos.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="#temario">Ver temario completo</a>
+            <a class="btn btn-secondary" href="#registro">Inscribirme</a>
+          </div>
+        </div>
+        <div class="panel">
+          <h3 style="margin:0 0 8px;color:var(--white);">¿Por qué este curso?</h3>
+          <p style="margin:0 0 12px;color:var(--muted);">Enfocado a estudiantes de la UNAM y personas que quieren dominar Python para proyectos de datos reales.</p>
+          <div class="details-grid">
+            <div class="detail">
+              <strong>Duración</strong>
+              <span>3 semanas · Lunes, miércoles y viernes</span>
+            </div>
+            <div class="detail">
+              <strong>Modalidad</strong>
+              <span>100% en línea con sesiones grabadas</span>
+            </div>
+            <div class="detail">
+              <strong>Incluye</strong>
+              <span>Grabaciones, cuadernos Jupyter, notas en PDF</span>
+            </div>
+            <div class="detail">
+              <strong>Inversión</strong>
+              <span>$249 MXN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="logros">
+      <div class="section-header">
+        <h2 class="section-title">¿Qué vas a lograr?</h2>
+        <p class="section-subtitle">Tres metas claras al terminar el curso.</p>
+      </div>
+      <div class="cards-3">
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Analizar datos reales</h3>
+          <p>Trabajarás con datasets y tablas, limpiando, explorando y obteniendo conclusiones con Python.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📈</div>
+          <h3>Hacer gráficas con Python</h3>
+          <p>Usarás Matplotlib y librerías similares para crear gráficas de barras, líneas y dispersión con buena presentación.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚙️</div>
+          <h3>Automatizar tareas</h3>
+          <p>Crearás scripts que automaticen limpieza de datos, manejo de archivos y tareas repetitivas.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ejemplos">
+      <div class="section-header">
+        <h2 class="section-title">Ejemplos de lo que harás en el curso</h2>
+        <p class="section-subtitle">Modela distintas historias con las gráficas y análisis que aprenderás.</p>
+      </div>
+      <ul class="list">
+        <li>Comparar tus hábitos de estudio mañana vs noche con gráficas de líneas.</li>
+        <li>Analizar la distribución de calificaciones de un grupo con histogramas.</li>
+        <li>Ver cómo cambian las calificaciones según las horas de estudio con gráficas de dispersión.</li>
+        <li>Explorar la relación entre estudio, redes sociales, sueño y desempeño usando mapas de calor.</li>
+      </ul>
+      <div class="examples-grid">
+        <figure class="graphic-card">
+          <img src="Graficas/estudio_manana_vs_noche.png" alt="Gráfica de líneas comparando horas de estudio en la mañana vs noche">
+          <figcaption>Comparar hábitos de estudio mañana vs noche con líneas.</figcaption>
+        </figure>
+        <figure class="graphic-card">
+          <img src="Graficas/histograma_calificaciones.png" alt="Histograma de distribución de calificaciones de un grupo">
+          <figcaption>Distribución de calificaciones de un grupo con histogramas.</figcaption>
+        </figure>
+        <figure class="graphic-card">
+          <img src="Graficas/horas_vs_calificacion_tendencia.png" alt="Gráfica de dispersión y tendencia de horas de estudio y calificación">
+          <figcaption>Relación entre horas de estudio y calificación con dispersión y tendencia.</figcaption>
+        </figure>
+        <figure class="graphic-card">
+          <img src="Graficas/heatmap_correlaciones.png" alt="Mapa de calor de correlaciones entre estudio, redes sociales, sueño y calificación">
+          <figcaption>Mapa de calor: estudio, redes sociales, sueño y desempeño.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="detalles">
+      <div class="section-header">
+        <h2 class="section-title">Detalles del curso</h2>
+        <p class="section-subtitle">Todo lo esencial en un vistazo.</p>
+      </div>
+      <div class="details-grid">
+        <div class="detail"><strong>Duración</strong><span>3 semanas</span></div>
+        <div class="detail"><strong>Días</strong><span>Lunes, miércoles y viernes</span></div>
+        <div class="detail"><strong>Modalidad</strong><span>En línea</span></div>
+        <div class="detail"><strong>Incluye</strong><span>Grabaciones, cuadernos Jupyter y notas en PDF</span></div>
+        <div class="detail"><strong>Costo</strong><span>$249 MXN</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="temario">
+      <div class="section-header">
+        <h2 class="section-title">Temario resumido por semanas</h2>
+        <p class="section-subtitle">Aprendizaje progresivo en 3 semanas.</p>
+      </div>
+      <div class="actions" style="margin-bottom:14px;">
+        <a class="btn btn-secondary" href="temariopython.pdf" download aria-label="Descargar temario completo en PDF">Descargar temario completo (PDF)</a>
+      </div>
+      <div class="weeks">
+        <div class="week">
+          <h4>Semana 1</h4>
+          <p>Fundamentos de Python: variables, tipos de datos, condicionales, ciclos y funciones.</p>
+        </div>
+        <div class="week">
+          <h4>Semana 2</h4>
+          <p>Introducción a Numpy y Pandas, lectura de archivos, manipulación de tablas y primeras gráficas.</p>
+        </div>
+        <div class="week">
+          <h4>Semana 3</h4>
+          <p>Automatización de tareas sencillas y mini-proyecto de análisis de datos o automatización.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="publico">
+      <div class="section-header">
+        <h2 class="section-title">¿Para quién es este curso?</h2>
+      </div>
+      <ul class="audience">
+        <li>Estudiantes de la UNAM que quieran aplicar Python en proyectos académicos.</li>
+        <li>Personas sin experiencia previa en programación.</li>
+        <li>Quienes desean dar sus primeros pasos en ciencia de datos y análisis.</li>
+      </ul>
+    </section>
+
+    <section class="section" id="registro">
+      <div class="cta-box">
+        <h2 class="section-title" style="margin:0;">Información y registro</h2>
+        <p style="margin:0;color:var(--text);">Si te interesa, llena el formulario para apartar tu lugar. Cupo limitado.</p>
+        <a class="btn btn-primary" href="https://docs.google.com/forms/d/e/1FAIpQLSdQCUfhePt3Q0Mwp0etIZIQtAQDRIjllMOTTpoWhv567B46rg/viewform?usp=publish-editor" aria-label="Ir al formulario de inscripción" target="_blank" rel="noopener noreferrer">Ir al formulario de inscripción</a>
+        <div class="contact">
+          <span>📱 WhatsApp: 55 6367 0240</span>
+          <span>✉️ Correo: alejandr688@gmail.com</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Hecho para estudiantes y entusiastas de datos. Listo para GitHub Pages.
+  </footer>
+
+  <script>
+    // Suaviza el scroll para enlaces internos
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", (e) => {
+        const targetId = anchor.getAttribute("href");
+        if (targetId.length > 1) {
+          e.preventDefault();
+          document.querySelector(targetId)?.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
