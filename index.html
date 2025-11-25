@@ -21,6 +21,20 @@
       --shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
     }
 
+    /* Modo claro */
+    body.light-theme {
+      --navy: #f6f9ff;
+      --navy-soft: #e8effa;
+      --white: #0c1b33;
+      --text: #1f2b45;
+      --muted: #4d5f7c;
+      --card: rgba(12, 27, 51, 0.04);
+      --border: rgba(12, 27, 51, 0.12);
+      --shadow: 0 12px 28px rgba(12, 27, 51, 0.18);
+      background: linear-gradient(180deg, #f6f9ff 0%, #eef3fb 60%, #e3ebf8 100%);
+      color: var(--text);
+    }
+
     * {
       box-sizing: border-box;
       scroll-behavior: smooth;
@@ -48,6 +62,11 @@
       z-index: 10;
       backdrop-filter: blur(8px);
       background: rgba(12, 27, 51, 0.8);
+      border-bottom: 1px solid var(--border);
+    }
+
+    body.light-theme header {
+      background: rgba(255, 255, 255, 0.9);
       border-bottom: 1px solid var(--border);
     }
 
@@ -99,6 +118,28 @@
     .nav-links a:hover {
       color: var(--white);
       background: rgba(212, 175, 55, 0.08);
+    }
+
+    .mode-toggle {
+      border: 1px solid var(--border);
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--white);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .mode-toggle:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.16);
+    }
+
+    body.light-theme .mode-toggle {
+      color: #1f2b45;
+      background: rgba(212, 175, 55, 0.2);
+      box-shadow: none;
     }
 
     .hero {
@@ -396,6 +437,46 @@
       font-size: 0.95rem;
     }
 
+    /* Ajustes de fondos en modo claro */
+    body.light-theme .list li,
+    body.light-theme .detail,
+    body.light-theme .contact span {
+      background: #eef3fb;
+      border-color: rgba(12, 27, 51, 0.12);
+      color: var(--text);
+    }
+
+    body.light-theme .btn-primary {
+      background: linear-gradient(135deg, #1f3d66, #0c1b33);
+      color: #f8f9fb;
+      border-color: rgba(12, 27, 51, 0.22);
+      box-shadow: 0 10px 18px rgba(12, 27, 51, 0.18);
+    }
+
+    body.light-theme .btn-secondary {
+      background: rgba(212, 175, 55, 0.22);
+      color: #1f2b45;
+    }
+
+    body.light-theme .cta-box {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(12, 27, 51, 0.04));
+      border: 1px solid rgba(12, 27, 51, 0.12);
+      color: var(--text);
+      box-shadow: 0 12px 22px rgba(12, 27, 51, 0.12);
+    }
+
+    body.light-theme .cta-box .btn-primary {
+      background: linear-gradient(135deg, #0c1b33, #1f3d66);
+      color: #f8f9fb;
+      border-color: rgba(12, 27, 51, 0.24);
+    }
+
+    body.light-theme .contact span {
+      background: #ffffff;
+      border-color: rgba(12, 27, 51, 0.12);
+      color: var(--text);
+    }
+
     @media (max-width: 680px) {
       nav {
         flex-direction: column;
@@ -420,11 +501,14 @@
         <span class="brand-badge">Py</span>
         <span>Curso Python · UNAM</span>
       </a>
-      <div class="nav-links">
-        <a href="#logros">Logros</a>
-        <a href="#ejemplos">Ejemplos</a>
-        <a href="#temario">Temario</a>
-        <a href="#registro">Registro</a>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div class="nav-links">
+          <a href="#logros">Logros</a>
+          <a href="#ejemplos">Ejemplos</a>
+          <a href="#temario">Temario</a>
+          <a href="#registro">Registro</a>
+        </div>
+        <button id="themeToggle" class="mode-toggle" type="button" aria-pressed="false">Modo día</button>
       </div>
     </nav>
   </header>
@@ -598,6 +682,32 @@
           document.querySelector(targetId)?.scrollIntoView({ behavior: "smooth" });
         }
       });
+    });
+
+    // Modo día/noche con preferencia guardada
+    const themeToggle = document.getElementById("themeToggle");
+    const THEME_KEY = "theme-preference";
+
+    const applyTheme = (theme) => {
+      const isLight = theme === "light";
+      document.body.classList.toggle("light-theme", isLight);
+      themeToggle.textContent = isLight ? "Modo noche" : "Modo día";
+      themeToggle.setAttribute("aria-pressed", String(isLight));
+    };
+
+    const getStoredTheme = () => localStorage.getItem(THEME_KEY);
+    const getPreferredTheme = () => {
+      const stored = getStoredTheme();
+      if (stored) return stored;
+      return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    };
+
+    applyTheme(getPreferredTheme());
+
+    themeToggle.addEventListener("click", () => {
+      const nextTheme = document.body.classList.contains("light-theme") ? "dark" : "light";
+      localStorage.setItem(THEME_KEY, nextTheme);
+      applyTheme(nextTheme);
     });
   </script>
 </body>
